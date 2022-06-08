@@ -88,3 +88,39 @@ console.log(obj.age)
 ## Proxy实现事件监听
 
 ![image-20220609000040332](C:\Users\root\AppData\Roaming\Typora\typora-user-images\image-20220609000040332.png)
+
+
+
+
+
+![image-20220609000842395](C:\Users\root\AppData\Roaming\Typora\typora-user-images\image-20220609000842395.png)
+
+
+
+
+
+## 监听in的捕获器
+
+![image-20220609001155791](C:\Users\root\AppData\Roaming\Typora\typora-user-images\image-20220609001155791.png)
+
+
+
+## delete捕获器
+
+![image-20220609001249791](C:\Users\root\AppData\Roaming\Typora\typora-user-images\image-20220609001249791.png)
+
+
+
+
+
+## 13种捕获器
+
+![image-20220609001915375](C:\Users\root\AppData\Roaming\Typora\typora-user-images\image-20220609001915375.png)
+
+
+
+
+
+## apply调用和new调用
+
+![image-20220609002405608](C:\Users\root\AppData\Roaming\Typora\typora-user-images\image-20220609002405608.png)
