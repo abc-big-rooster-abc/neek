@@ -125,3 +125,9 @@ console.log(obj.age)
 
 ![image-20220609002405608](C:\Users\root\AppData\Roaming\Typora\typora-user-images\image-20220609002405608.png)
 
+
+
+
+
+![image-20220609001915375](C:\Users\root\AppData\Roaming\Typora\typora-user-images\image-20220609001915375.png)
+
