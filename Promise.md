@@ -306,3 +306,254 @@ Rejected(意味着操作失败)
 ## 传入一个对象，这个兑现有then方法
 
 ![image-20220611153455918](C:\Users\root\AppData\Roaming\Typora\typora-user-images\image-20220611153455918.png)
+
+## then方法-接受两个参数
+
+### then方法是Promise对象上的一个方法：其实是放在Promise的原型上Promise.prototype.then
+
+~~~js
+console.log(Object.getOwnPropertyDescriptors(Promise.prototype))
+
+[Running] node "c:\Users\root\Desktop\静态页+静态组件\todoList\todolist\Peflect.js"
+{
+  constructor: {
+    value: [Function: Promise],
+    writable: true,
+    enumerable: false,
+    configurable: true
+  },
+  then: {
+    value: [Function: then],
+    writable: true,
+    enumerable: false,
+    configurable: true
+  },
+  catch: {
+    value: [Function: catch],
+    writable: true,
+    enumerable: false,
+    configurable: true
+  },
+  finally: {
+    value: [Function: finally],
+    writable: true,
+    enumerable: false,
+    configurable: true
+  },
+  [Symbol(Symbol.toStringTag)]: {
+    value: 'Promise',
+    writable: false,
+    enumerable: false,
+    configurable: true
+  }
+}
+
+[Done] exited with code=0 in 0.07 seconds
+
+~~~
+
+
+
+
+
+
+
+## then return 一个值的时候，相当于又创建了一个Promise的resolve值
+
+~~~js
+const promise = new Promise((resolve, reject)=>{
+    console.log('我是第一个promise')
+    resolve()
+})
+
+promise.then(()=>{
+    return '我是第二个promise'    // return 相当于 new Promise((resolve)=>resolve("我是第二个promise"))
+}).then(res=>{
+    console.log(res)
+})
+
+
+[Running] node "c:\Users\root\Desktop\静态页+静态组件\todoList\todolist\Peflect.js"
+我是第一个promise
+我是第二个promise
+
+[Done] exited with code=0 in 0.063 seconds
+~~~
+
+## 
+
+
+
+## then return 一个对象，相当于又创建了一个Promise的resolve值
+
+~~~js
+promise.then(()=>{
+    return {
+    	then: function(resolve, reject)=>{
+        	resolve(22222)
+    	}
+    }    // return 相当于 new Promise((resolve)=>resolve("我是第二个promise"))
+}).then(res=>{
+    console.log(res)
+})
+
+
+22222
+~~~
+
+
+
+## Promise.all 用法
+
+~~~js
+const promise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        resolve('我是第一个promise')
+    },1000)
+})
+const promise_1 = new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            resolve('我是第2个promise')
+        },1000)
+ })  
+const promise_2= new Promise((resolve, reject)=>{
+            setTimeout(()=>{
+                resolve('我是第3个promise')
+            },1000)
+    
+})
+
+// 需求：s所有的Promise都变成fulfilled时，再拿到结果
+Promise.all([promise,promise_1,promise_2,'aaaa']).then(res=>{
+    console.log(res)
+})
+
+
+[Running] node "c:\Users\root\Desktop\静态页+静态组件\todoList\todolist\Peflect.js"
+[ '我是第一个promise', '我是第2个promise', '我是第3个promise', 'aaaa' ]
+
+[Done] exited with code=0 in 1.073 seconds
+
+~~~
+
+
+
+
+
+## Promise.allSettled
+
+~~~js
+const promise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        resolve('我是第一个promise')
+    },1000)
+})
+const promise_1 = new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            resolve('我是第2个promise')
+        },1000)
+ })  
+const promise_2= new Promise((resolve, reject)=>{
+            setTimeout(()=>{
+                reject('我是第3个promise')
+            },1000)
+    
+})
+
+// 需求：s所有的Promise都变成fulfilled时，再拿到结果
+Promise.allSettled([promise,promise_1,promise_2,'aaaa']).then(res=>{
+    console.log(res)
+})
+
+[Running] node "c:\Users\root\Desktop\静态页+静态组件\todoList\todolist\Peflect.js"
+[
+  { status: 'fulfilled', value: '我是第一个promise' },
+  { status: 'fulfilled', value: '我是第2个promise' },
+  { status: 'rejected', reason: '我是第3个promise' },
+  { status: 'fulfilled', value: 'aaaa' }
+]
+
+[Done] exited with code=0 in 1.08 seconds
+~~~
+
+
+
+## Promise.race  只要有一个个Promise变成fulfilled状态，那么就结束
+
+~~~js
+const promise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        resolve('我是第一个promise')
+    },1000)
+})
+const promise_1 = new P`
+`mise((resolve, reject)=>{
+        setTimeout(()=>{
+            resolve('我是第2个promise')
+        },1000)
+ })  
+const promise_2= new Promise((resolve, reject)=>{
+            setTimeout(()=>{
+                reject('我是第3个promise')
+            },1000)
+    
+})
+
+// 需求：s所有的Promise都变成fulfilled时，再拿到结果
+Promise.race([promise,promise_1,promise_2]).then(res=>{
+    console.log(res)
+})
+
+[Running] node "c:\Users\root\Desktop\静态页+静态组件\todoList\todolist\Peflect.js"
+我是第一个promise
+
+[Done] exited with code=0 in 1.078 seconds
+
+~~~
+
+
+
+## race 和 any的区别
+
+~~~js
+const promise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        resolve('我是第一个promise')
+    },3000)
+})
+const promise_1 = new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            resolve('我是第2个promise')
+        },2000)
+ })  
+const promise_2= new Promise((resolve, reject)=>{
+            setTimeout(()=>{
+                reject('我是第3个promise')
+            },1000)
+    
+})
+
+// 需求：s所有的Promise都变成fulfilled时，再拿到结果
+Promise.race([promise,promise_1,promise_2]).then(res=>{
+    console.log(res)
+}).catch((err)=>{
+    console.log(err)
+    console.log("race有结果的时候就返回，any有一个fulfilled的时候再返回")
+})
+
+Promise.any([promise,promise_1,promise_2]).then(res=>{
+    console.log(res)
+}).catch((err)=>{
+    console.log(err)
+})
+
+
+[Running] node "c:\Users\root\Desktop\静态页+静态组件\todoList\todolist\Peflect.js"
+我是第3个promise
+race有结果的时候就返回，any有一个fulfilled的时候再返回
+我是第2个promise
+
+[Done] exited with code=0 in 3.063 seconds
+
+~~~
+
