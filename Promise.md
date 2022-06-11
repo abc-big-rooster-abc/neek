@@ -1,5 +1,97 @@
 # Promise
 
+## 原始实现异步请求处理
+
+~~~js
+
+// 原始实现异步请求处理
+
+function requestData(url,successCallback, failCallback){
+    setTimeout(()=>{
+        //模拟网络请求
+        if (url === 'coderwhy'){
+            let names = ['adb','dd']
+            successCallback(names)
+        }
+        else{
+            let errMessage = '亲求失败';
+            failCallback(errMessage)
+        }
+    },1000)
+};
+const a = requestData('coderwhy',(a)=>{
+    console.log(a)
+},
+(b)=>{
+    console.log(b)
+})
+
+const b = requestData('谢公胜',(a)=>{
+    console.log(a)
+},
+(b)=>{
+    console.log(b)
+})
+
+[Running] node "c:\Users\root\Desktop\静态页+静态组件\todoList\todolist\Peflect.js"
+[ 'adb', 'dd' ]
+亲求失败
+
+[Done] exited with code=0 in 1.237 seconds
+~~~
+
+## Promise实现异步请求
+
+~~~js
+function requestData(url){
+return new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        //模拟网络请求
+        if(url === 'coderwhy'){
+            let names = ['adb','dd']
+            resolve(names)
+        }
+        else{
+            let errMessage = '亲求失败';
+            reject(errMessage)
+        }
+    },1000)  
+})
+}
+// 方法1
+const promist_1 = requestData('coderwhy')
+promist_1.then((a)=>{
+    console.log(a)
+}).catch((b)=>{
+    console.log(b)
+}).finally(()=>{
+    console.log("我都会执行1")
+})
+// 方法2
+promist_1.then((a)=>{
+    console.log(a)
+},  (b)=>{
+    console.log(b)
+}).finally(()=>{
+    console.log("我都会执行2")
+})
+
+
+[Running] node "c:\Users\root\Desktop\静态页+静态组件\todoList\todolist\Peflect.js"
+[ 'adb', 'dd' ]
+[ 'adb', 'dd' ]
+我都会执行2
+我都会执行1 
+~~~
+
+
+
+
+
+
+
+
+
 ~~~js
 // 之所以使用Promise,只是为了不写回调函数，无线套娃，为了把本来异步的代码写成同步的形式，方便阅读
 // resolve 代表成功，承诺兑现
@@ -207,3 +299,10 @@ Rejected(意味着操作失败)
     </script>
 ~~~
 
+## 当resolve传入的是一个promise时，以这个promise里面的状态为准，
+
+![image-20220611153239053](C:\Users\root\AppData\Roaming\Typora\typora-user-images\image-20220611153239053.png)
+
+## 传入一个对象，这个兑现有then方法
+
+![image-20220611153455918](C:\Users\root\AppData\Roaming\Typora\typora-user-images\image-20220611153455918.png)
