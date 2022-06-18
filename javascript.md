@@ -396,3 +396,54 @@ var a = str.split(','); // a 是一  个数组
 #### 
 
 ### 
+
+## 参数作用域 （面试题）当函数的参数有默认值时， 会形成一个新的作用域，这个作用域用于保存参数的值
+
+~~~js
+var x = 0;
+// 当函数的参数有默认值时， 会形成一个新的作用域，这个作用域用于保存参数的值
+function foo(x, y = function(){x = 3; console.log(x)}) {
+    console.log(x)
+    var x = 2
+    y()
+    console.log(x)
+}
+foo()
+console.log(x)
+
+
+
+
+[Running] node "c:\Users\root\Desktop\静态页+静态组件\todoList\todolist\Peflect.js"
+undefined
+3
+2
+0
+
+[Done] exited with code=0 in 0.244 seconds
+~~~
+
+
+
+~~~js
+var x = 0;
+// 当函数的参数有默认值时， 会形成一个新的作用域，这个作用域用于保存参数的值
+function foo(x, y = function(){x = 3; console.log(x)}) {
+    console.log(x)
+    var x = 2
+    y()
+    console.log(x)
+}
+foo(1)
+console.log(x)
+
+
+[Running] node "c:\Users\root\Desktop\静态页+静态组件\todoList\todolist\Peflect.js"
+1
+3
+2
+0
+
+[Done] exited with code=0 in 0.253 seconds
+~~~
+
